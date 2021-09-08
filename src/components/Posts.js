@@ -8,6 +8,21 @@ class Posts extends Component {
     this.props.fetchPosts();
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   console.log("npWP", nextProps.newPost);
+  //   // if (nextProps.newPost) {
+  //   this.props.posts.unshift(nextProps.newPost);
+  //   //}
+  // }
+
+  componentDidUpdate(prevProps) {
+    console.log("prevProps", prevProps);
+    if (this.props.newPost) {
+      console.log("1st", this.props.newPost);
+      this.props.posts.unshift(this.props.newPost);
+    }
+  }
+
   render() {
     const postItems = this.props.posts.map((post) => (
       <div key={post.id}>
@@ -15,10 +30,13 @@ class Posts extends Component {
         <p>{post.body}</p>
       </div>
     ));
+
     return (
       <div>
-        <h1>Posts</h1>
-        {postItems}
+        <div>
+          <h1>Posts</h1>
+          {postItems}
+        </div>
       </div>
     );
   }
@@ -30,6 +48,7 @@ Posts.propTypes = {
 };
 const mapStateToProps = (state) => ({
   posts: state.posts.items,
+  newPost: state.posts.item,
 });
 
 export default connect(mapStateToProps, { fetchPosts })(Posts);
